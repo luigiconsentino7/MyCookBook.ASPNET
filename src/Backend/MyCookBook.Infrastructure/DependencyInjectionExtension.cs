@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MyCookBook.Domain.Repositories;
 using MyCookBook.Domain.Repositories.User;
@@ -9,16 +10,17 @@ namespace MyCookBook.Infrastructure
 {
     public static class DependencyInjectionExtension
     {
-        public static void AddInfrastructure(this IServiceCollection services)
+        public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            AddDbContext_SqlServer(services);
+            var connectionString = configuration.GetConnectionString("ConnectionDb");
+
+            AddDbContext_SqlServer(services, configuration);
             AddRepositories(services);
         }
 
-        private static void AddDbContext_SqlServer(IServiceCollection services)
+        private static void AddDbContext_SqlServer(IServiceCollection services, IConfiguration configuration)
         {
-
-            var connectionString = "Server=localhost;Database=mycookbookdb;Trusted_Connection=True;TrustServerCertificate=True;MultipleActiveResultSets=true";
+            var connectionString = configuration.GetConnectionString("ConnectionDb");
 
             services.AddDbContext<MyCookBookDbContext>(dbContextOption =>
             {

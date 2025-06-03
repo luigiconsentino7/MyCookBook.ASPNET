@@ -28,8 +28,6 @@ namespace MyCookBook.Application.UseCases.User.Register
 
         public async Task<ResponseRegisterUserJson> Execute(RequestRegisterUserJson request)
         {
-            var passwordEncrypt = new PasswordEncrypter();
-
             Validate(request);
 
             var user = _mapper.Map<Domain.Entities.User>(request);    
